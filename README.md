@@ -4,11 +4,12 @@ Power Management of Atmega-328p
 
 This sequence displays the possibility to save power by keeping the processor in sleep mode. Following sleep modes are available:
 
-    SLEEP_MODE_IDLE
-    SLEEP_MODE_ADC
-    SLEEP_MODE_PWR_SAVE
-    SLEEP_MODE_STANDBY
-    SLEEP_MODE_PWR_DOWN
+- SLEEP_MODE_IDLE
+- SLEEP_MODE_ADC
+- SLEEP_MODE_PWR_SAVE
+- SLEEP_MODE_STANDBY
+- SLEEP_MODE_PWR_DOWN
+
 
 Wake-up is done using an external interrupt - a button on pin PIND2 (INT0).
 
