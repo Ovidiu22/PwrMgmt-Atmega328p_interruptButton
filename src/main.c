@@ -1,40 +1,63 @@
-/**
- * \file
- *
- * \brief Empty user application template
- *
- */
+/*******************************/
+/*** Created by Ovidiu Sabau ***/
+/***  29th December 2022	 ***/
+/*******************************/
 
-/**
- * \mainpage User Application template doxygen documentation
- *
- * \par Empty user application template
- *
- * Bare minimum empty user application template
- *
- * \par Content
- *
- * -# Include the ASF header files (through asf.h)
- * -# "Insert system clock initialization code here" comment
- * -# Minimal main function that starts with a call to board_init()
- * -# "Insert application code here" comment
- *
- */
+#include "PowerManagement.h"
+#include "interruptConfig.h"
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <avr/wdt.h>
 
-/*
- * Include header files for all drivers that have been imported from
- * Atmel Software Framework (ASF).
- */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
- */
-#include <asf.h>
 
-int main (void)
+void blink_LED_PORTD(uint8_t, uint8_t);
+
+
+int main(void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
+	/* Initialization */
+	interruptConfig();
+	
+	while(1)
+	{
+		/* Some sequence */
+		blink_LED_PORTD(PIND7, 3);
+		_delay_ms(3000);
+	
+		/* Power management */
+		enable_interrupts();
+		enterSleep();
+	}
+	return 0;
+}
 
-	board_init();
 
-	/* Insert application code here, after the board has been initialized. */
+/* *****************************************************************
+Name:		Interrupt service routine 0
+Inputs:		none
+Outputs:	none
+Description:wakes up MCU when an external interrupt on pin PIND2 occurs
+******************************************************************** */
+ISR(INT0_vect)
+{
+	cli();
+	_delay_ms(50);	// prevent pin toggling due to imperfect switching
+}
+
+/* *****************************************************************
+Name:		blink_LED_PORTD()
+Inputs:		pin number of the LED and how many times LED should blink
+Outputs:	none
+Description:blinks a LED a defined number of times
+******************************************************************** */
+void blink_LED_PORTD(uint8_t pinNumber, uint8_t times)
+{
+	DDRD |= (1 << pinNumber);
+	for (uint8_t i = 0; i < times; i++)
+	{
+		PORTD |= ( 1 << pinNumber );
+		_delay_ms(100);
+		PORTD &= ~( 1 << pinNumber );
+		_delay_ms(100);
+	}
 }
