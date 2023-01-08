@@ -1,6 +1,6 @@
 # PwrMgmt-Atmega328p_interruptButton
  
-Power Management of Atmega-328p
+Power Management of Atmega-328p (Arduino nano)
 
 This sequence displays the possibility to save power by keeping the processor in sleep mode. Following sleep modes are available:
 
